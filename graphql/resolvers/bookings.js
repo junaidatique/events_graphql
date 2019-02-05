@@ -5,8 +5,11 @@ const { simpleBooking, simpleEvent } = require("./common")
 
 module.exports = {
 
-  bookings: async () => {
+  bookings: async (args, request) => {
     try {
+      if (!request.isAuth) {
+        throw new Error("Un Authenticated request");
+      }
       const bookings = await Booking.find();
       return bookings.map(booking => {
         return simpleBooking(booking)
@@ -15,7 +18,10 @@ module.exports = {
       throw error;
     }
   },
-  bookEvent: async (input) => {
+  bookEvent: async (input, request) => {
+    if (!request.isAuth) {
+      throw new Error("Un Authenticated request");
+    }
     const dbEvent = await Event.findOne({ _id: input.eventId });
     const booking = new Booking({
       user: '5c5037135a7b834c3b403bda',
@@ -24,7 +30,10 @@ module.exports = {
     const result = await booking.save();
     return simpleBooking(result)
   },
-  cancelEvent: async (input) => {
+  cancelEvent: async (input, request) => {
+    if (!request.isAuth) {
+      throw new Error("Un Authenticated request");
+    }
     try {
       const booking = await Booking.findById(input.bookingId).populate('event');
       const event = simpleEvent(booking.event)

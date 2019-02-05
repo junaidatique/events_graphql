@@ -17,7 +17,10 @@ module.exports = {
       throw error;
     }
   },
-  createEvent: async ({ input }) => {
+  createEvent: async ({ input }, request) => {
+    if (!request.isAuth) {
+      throw new Error("Un Authenticated request");
+    }
     try {
       const event = new Event({
         title: input.title,
