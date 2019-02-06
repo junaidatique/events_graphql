@@ -8,11 +8,17 @@ const isAuth = require('./middleware/is-auth')
 const app = express();
 
 
-
-
-
 app.use(bodyParser.json());
 app.use(isAuth);
+app.use((request, response, next) => {
+  response.setHeader('Access-Control-Allow-Origin', '*');
+  response.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+  response.setHeader('Access-Control-Allow-Headers', 'Content-Type, Autherization');
+  if (request.method === 'OPTIONS') {
+    return response.sendStatus(200);
+  }
+  next();
+});
 app.use('/graphql',
   graphqlHttp(
     {
@@ -29,8 +35,3 @@ mongoose.connect('mongodb://localhost/graphQL_events')
   .catch(error => {
     console.log(error);
   })
-// app.get('/', (request, response, next) => {
-//   response.send("Hellow Word");
-// })
-
-// app.listen(8080);
