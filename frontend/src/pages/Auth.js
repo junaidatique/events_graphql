@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import AuthContext from '../context/auth-context';
 import './Auth.css';
 
+import SocialLogins from '../components/SocialLogins';
+
 class AuthPage extends Component {
   state = {
     isLogin: true
@@ -92,6 +94,7 @@ class AuthPage extends Component {
       <div className="form-action">
         <button type="submit">Submit</button>
         <button type="button" onClick={this.swithModeHandler}>Switch to {this.state.isLogin ? 'Signup' : "Login"}</button>
+        <SocialLogins />
       </div>
     </form>;
   }

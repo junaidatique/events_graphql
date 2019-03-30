@@ -35,7 +35,13 @@ module.exports = buildSchema(
       price: Float!
       date: String!
     }
-
+    type FbData {
+      id: String
+      email: String
+      first_name: String
+      last_name: String
+      name: String
+    }
     input UserInput {
       email: String!
       password: String!
@@ -46,6 +52,7 @@ module.exports = buildSchema(
       users: [User!]!
       bookings: [Booking!]!
       login(email: String!, password: String!): AuthData!
+      fbLogin(code: String!): FbData!
     }
 
     type RootMutation {
@@ -53,6 +60,7 @@ module.exports = buildSchema(
       createUser(input: UserInput): User
       bookEvent(eventId: ID!): Booking!
       cancelEvent(bookingId: ID!): Event!
+      
     }
     schema {
       query: RootQuery
